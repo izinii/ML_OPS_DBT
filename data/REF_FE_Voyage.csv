@@ -1,0 +1,3 @@
+Scope,Categorie,KPI_FE,Source_macro_FE,Source_detail_FE,Unite_reporting_FE,Conversion_donnee_activite,Unite_FE,Methode_FE,Date_set_FE,Debut_validite_FE,Fin_validite_FE,Motif_changement,Valeur_FE
+3,Deplacements professionnels,Avion,ADEME,Base ADEME - avec traenees,miles,1.61,kgCO2/km,Physique,1/6/2023,1/1/2018,,,0.178
+3,Deplacements professionnels,Train,ADEME,Base ADEME,miles,1.61,kgCO2/km,Physique,1/6/2023,1/1/2018,,,0.00236
