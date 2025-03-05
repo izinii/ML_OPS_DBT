@@ -1,6 +1,5 @@
 ## SETUP:
 
-
 ### Requirements
 
 - [Download and install Python 3.11.x](https://www.python.org/downloads/release/python-3116/)
