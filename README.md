@@ -23,8 +23,6 @@
       - `. .\venv\Scripts\activate`
 - Install python packages `pip install -r requirements.txt`
 
-<details>
-  <summary>Additionnal setup to work with bigquery (optionnal)</summary>
 
 
 ### DBT Setup and test
