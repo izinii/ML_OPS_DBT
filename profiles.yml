@@ -1,14 +1,7 @@
-dbt_intro_da:
+dbt_introduction_esilv:
   target: dev_duckdb
   outputs:
     dev_duckdb:
       path: dbt.duckdb
       type: duckdb
-      threads: 4
-    dev_bigquery:
-      type: bigquery
-      method: oauth
-      project: formation-sql-316408
-      dataset: dbt_intro_da_name
-      location: EU
       threads: 4
