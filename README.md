@@ -34,72 +34,65 @@
 The first `dbt run` should create a file named `dbt.duckdb`.
 This file will contains all the tables views we are creating.
 
-<details>
-  <summary>VScode extension (optionnal but nice to have)</summary>
-
-### VScode extension (optionnal but nice to have):
-
-To help us navigate the dbt project we are using the extension dbt power user:
-- Install the extension: https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user
-
-There is one setting that should be added
-- Go in settings
-    - ![](./assets/vs_code_extensions/dbt_power_user/01_open_settings.png)
-- Search for `files:assoc` and add `*.sql` in the field *Item* and `jinja-sql` in the *Value*
-    - ![](./assets/vs_code_extensions/dbt_power_user/02_add_in_settings.png)
-- Clicks on *run dbt SQL*
-    - ![](./assets/vs_code_extensions/dbt_power_user/03_query_model.png)
-- View lineage
-    - ![](./assets/vs_code_extensions/dbt_power_user/04_view_lineage.png)
-
-</details>
 
 ### dbt show
 
-To look explore what is inside the database we can use the `dbt show` command: https://docs.getdbt.com/reference/commands/show
+To look explore what is inside the database we can use the `dbt show -s 'name_of_your_model'` command: https://docs.getdbt.com/reference/commands/show
 
 For example the command:
 ```
-dbt show -s local_sales
+dbt show -s voyages
 ```
 should output something like:
 ```
-13:58:16  Running with dbt=1.6.6
-13:58:17  Registered adapter: duckdb=1.6.1
-13:58:17  Found 1 model, 4 sources, 0 exposures, 0 metrics, 351 macros, 0 groups, 0 semantic models
-13:58:17  
-13:58:17  Concurrency: 4 threads (target='dev_duckdb')
-13:58:17  
-13:58:17  Previewing node 'local_sales':
-| product_category     | pdt_SUB_CATEGORY  | barcode_ean13     | site_key          |       DATE |    CA |
-| -------------------- | ----------------- | ----------------- | ----------------- | ---------- | ----- |
-| APERITIFS            | SANS ALCOOL       | f_f_0327607249893 | f_f_8429768983288 | 2023-03-08 | 37.57 |
-| VQPRD ROUGES/HORS... | VINS DU SUD OUEST | f_f_4371089866174 | f_f_8429768983288 | 2023-10-15 | 11.79 |
-| ALCOOLS              | PUNCHS            | f_f_2239755478262 | f_f_8429768983288 | 2023-08-13 | 31.95 |
-| ALCOOLS              | GIN-VODKA-TEQUILA | f_f_6023176352753 | f_f_8429768983288 | 2023-06-20 | 22.36 |
-| VQPRD ROUGES/HORS... | VINS DU SUD OUEST | f_f_2550597061567 | f_f_8429768983288 | 2023-05-22 | 34.23 |
+08:31:31  Running with dbt=1.9.2
+08:31:32  Registered adapter: duckdb=1.9.2
+08:31:32  Found 2 models, 2 sources, 427 macros
+08:31:32
+08:31:32  Concurrency: 4 threads (target='dev_duckdb')
+08:31:32
+Previewing node 'voyages':
+| Country | Invoice_Month      | O&D_Net_Count | PNR | Primary_Product_Code | Carrier_Code_Vali... | ... |
+| ------- | ------------------ | ------------- | --- | -------------------- | -------------------- | --- |
+| FRANCE  | 202209 - septembre |             1 |     | Air                  |                      | ... |
+| FRANCE  | 202209 - septembre |             1 |     | Rail                 |                      | ... |
+| FRANCE  | 202209 - septembre |             1 |     | Rail                 |                      | ... |
+| FRANCE  | 202209 - septembre |             1 |     | Rail                 |                      | ... |
+| FRANCE  | 202209 - septembre |             1 |     | Air                  |                      | ... |
 ```
-Which are a couple of rows from the table defined by the dbt model `local_sales`
+Which are a couple of rows from the table defined by the dbt model `voyages`
 
 We can also run arbitrary queries:
 ```
-dbt show --inline "select distinct(product_category) from {{ ref('local_sales') }}"
+dbt show --inline "select distinct(Primary_Product_Code) from {{ ref('voyages') }}"
 ```
 should output something like:
 ```
-13:58:20  Running with dbt=1.6.6
-13:58:20  Registered adapter: duckdb=1.6.1
-13:58:20  Found 1 model, 4 sources, 0 exposures, 0 metrics, 351 macros, 0 groups, 0 semantic models
-13:58:20  
-13:58:20  Concurrency: 4 threads (target='dev_duckdb')
-13:58:20  
-13:58:20  Previewing inline node:
-| product_category     |
+08:32:37  Running with dbt=1.9.2
+08:32:37  Registered adapter: duckdb=1.9.2
+08:32:38  Found 2 models, 1 sql operation, 2 sources, 427 macros
+08:32:38
+08:32:38  Concurrency: 4 threads (target='dev_duckdb')
+08:32:38
+Previewing inline node:
+| Primary_Product_Code |
 | -------------------- |
-| ALCOOLS              |
-| APERITIFS            |
-| VQPRD BORDEAUX RO... |
-| EAUX AROMATISEES     |
-| VINS DE TABLES/PAYS  |
+| Air                  |
+| Rail                 |
 ```
 
+
+If you want to export your results to a .csv file for better readability, you can use the following command:
+
+dbt run-operation export_to_csv --args '{"model_name": "ref_fe", "output_path": "output/my_model.csv"}'
+
+This will create an output directory containing the results of the model.
+
+If you want to visualize the lineage you are building, you can use the following commands:
+
+dbt docs generate
+dbt docs serve
+
+The first command generates the documentation, while the second one opens a web page where you can navigate and explore the lineage of your models. (bottom right of the page)
+
+Your objective for this session is to match 'voyage_08_2022' and 'voyage_09_2022' with the correct carbon emissions from 'REF_FE_Voyage', then save the results in the output folder. Specifically, you want to display the total carbon emissions from trains and planes for each month.
