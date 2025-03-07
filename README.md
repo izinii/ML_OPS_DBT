@@ -91,8 +91,22 @@ This will create an output directory containing the results of the model.
 If you want to visualize the lineage you are building, you can use the following commands:
 
 dbt docs generate
+
 dbt docs serve
+
+S'il y aura une erreur d'autorisation, c'est que le port utilisé par défaut est déjà utilisé surement donc bouché. Il faut donc en forcer un autre: dbt docs serve --port 9000
+
+Une autre source d'erreur est peut-être le navigateur: c'est mieux d'utiliser Chrome. 
 
 The first command generates the documentation, while the second one opens a web page where you can navigate and explore the lineage of your models. (bottom right of the page)
 
 Your objective for this session is to match 'voyage_08_2022' and 'voyage_09_2022' with the correct carbon emissions from 'REF_FE_Voyage', then save the results in the output folder. Specifically, you want to display the total carbon emissions from trains and planes for each month.
+
+
+
+
+## **Mes résultats:**
+
+![Résultat attendu](images/output_csv.png)
+
+![DBT graph](images/dbt_graph.png)

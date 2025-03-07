@@ -2,9 +2,10 @@ version: 2
 
 sources:
   - name: dbt_intro
-    meta:
+    meta: # pour dire où est l'info en réalité, ici c'est dans le dossier data où il y a nos fichiers CSV 
       external_location: "data/{name}.csv"
     tables:
-      - name: voyage_08_2022
       - name: REF_FE_Voyage
-
+      - name: voyage_08_2022
+      - name: voyage_09_2022
+      - name: Routes_interdites
